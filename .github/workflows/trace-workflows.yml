@@ -3,18 +3,8 @@ name: Trace GitHub Actions Workflows
 on:
   workflow_run:
     workflows:
-      - "Alternative CI Runners 1"
-      - "Alternative CI Runners 2"
-      - "Alternative CI Runners 3"
-      - "Benchmark"
-      - "daggerverse-preview"
-      - "docs"
-      - "Engine & CLI"
-      - "Github"
-      - "Helm"
-      - "Publish"
-      - "Publish Rust SDK"
-      - "SDKs"
+      - "Alternative CI Runners 4 - NF-QEMU"
+      - "Alternative CI Runners 4 - NF-CLH"
     types:
       - completed
 
@@ -25,6 +15,7 @@ jobs:
   run:
     name: Export '${{ github.event_name }}' workflow trace
     runs-on: ubuntu-latest
+    # TODO: 👇 Change this to match your fork name
     if: ${{ github.repository == 'dagger/dagger' }}
     steps:
       - name: Export Workflow Trace
