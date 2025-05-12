@@ -19,7 +19,7 @@ on:
 
 jobs:
   remote-dagger-engine:
-    if: ${{ github.repository == 'dagger/dagger' }}
+    if: ${{ github.repository == 'nf-testing/dagger' }}
     runs-on:
       - ${{ inputs.machine }}
     timeout-minutes: ${{ inputs.timeout }}

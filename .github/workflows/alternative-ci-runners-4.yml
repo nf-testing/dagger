@@ -5,7 +5,7 @@ on:
   # 1. 9:06AM UTC (low activity)
   # 2. 9:36AM UTC (cache test - high chance of no code changes)
   schedule:
-    - cron: "6,36 9 * * *"
+    - cron: "6,36 3,9,15,21 * * *"
   # Enable manual trigger for on-demand runs - helps when debugging
   workflow_dispatch:
 
@@ -13,18 +13,45 @@ permissions:
   contents: read
 
 jobs:
-  docs-lint-on-northflank-kata-remote-engine:
+  docs-lint-on-internal-01-0-18-7-remote-engine:
     uses: ./.github/workflows/_dagger_on_northflank_remote_engine.yml
     with:
-      machine: nf-kata-az-amd-qemu
+      machine: internal-01-0.18.7
       function: check --targets=docs
 
-#  sdk-go-on-northflank-kata-remote-engine:
-#    needs: docs-lint-on-northflank-kata-remote-engine
+  sdk-go-on-internal-01-0-18-7-remote-engine:
+    needs: docs-lint-on-internal-01-0-18-7-remote-engine
+    uses: ./.github/workflows/_dagger_on_northflank_remote_engine.yml
+    with:
+      machine: internal-01-0.18.7
+      function: check --targets=sdk/go
+
+#  docs-lint-on-internal-02-0-18-7-remote-engine:
 #    uses: ./.github/workflows/_dagger_on_northflank_remote_engine.yml
 #    with:
-#      machine: nf-kata-az-amd-qemu
+#      machine: internal-02-0.18.7
+#      function: check --targets=docs
+#
+#  sdk-go-on-internal-02-0-18-7-remote-engine:
+#    needs: docs-lint-on-internal-02-0-18-7-remote-engine
+#    uses: ./.github/workflows/_dagger_on_northflank_remote_engine.yml
+#    with:
+#      machine: internal-02-0.18.7
 #      function: check --targets=sdk/go
+
+  docs-lint-on-internal-03-0-18-7-remote-engine:
+    uses: ./.github/workflows/_dagger_on_northflank_remote_engine.yml
+    with:
+      machine: internal-03-0.18.7
+      function: check --targets=docs
+
+  sdk-go-on-internal-03-0-18-7-remote-engine:
+    needs: docs-lint-on-internal-03-0-18-7-remote-engine
+    uses: ./.github/workflows/_dagger_on_northflank_remote_engine.yml
+    with:
+      machine: internal-03-0.18.7
+      function: check --targets=sdk/go
+
 #
 #  sdk-python-on-northflank-kata-remote-engine:
 #    needs: docs-lint-on-northflank-kata-remote-engine

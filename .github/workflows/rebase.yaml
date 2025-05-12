@@ -1,0 +1,37 @@
+name: Rebase on dagger/dagger
+
+on:
+  schedule:
+    - cron: "36 2,8,14,20 * * *"  # Runs at 8:36 AM and 8:36 PM UTC
+  workflow_dispatch:         # Optional: Allows manual trigger
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required to rebase
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Add dagger/dagger remote and fetch
+        run: |
+          git remote add dagger https://github.com/dagger/dagger.git
+          git fetch dagger
+
+      - name: Rebase your main onto dagger/main
+        run: |
+          git checkout main
+          git rebase dagger/main
+
+      - name: Push changes (if any)
+        run: |
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/nf-testing/dagger.git
+          git push origin main --force-with-lease
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
